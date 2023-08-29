@@ -1,4 +1,4 @@
-const KEY_BD = '@usuariosestudo'
+aconst KEY_BD = '@usuariosestudo'
 
 
 var listaRegistros = {
@@ -59,7 +59,7 @@ function desenhar(){
     }
 }
 
-function insertUsuario(nome, fone){
+function insertUsuario(nome, fone, pessoa){
     const id = listaRegistros.ultimoIdGerado + 1;
     listaRegistros.ultimoIdGerado = id;
     listaRegistros.usuarios.push({
@@ -70,7 +70,7 @@ function insertUsuario(nome, fone){
     vizualizar('lista')
 }
 
-function editUsuario(id, nome, fone){
+function editUsuario(id, nome, fone, pessoa){
     var usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
     usuario.nome = nome;
     usuario.fone = fone;
@@ -98,6 +98,7 @@ function perguntarSeDeleta(id){
 function limparEdicao(){
     document.getElementById('nome').value = ''
     document.getElementById('fone').value = ''
+    document.getElementById('pessoa').value = ''
 }
 
 function vizualizar(pagina, novo=false, id=null){

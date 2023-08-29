@@ -36,7 +36,7 @@ function desenhar(){
         if(FILTRO.trim()){
             const expReg = eval(`/${FILTRO.trim().replace(/[^\d\w]+/g,'.*')}/i`)
             data = data.filter( usuario => {
-                return expReg.test( usuario.nome ) || expReg.test( usuario.fone )
+                return expReg.test( usuario.nome ) || expReg.test( usuario.fone ) || expReg.test( usuario.pessoa )
             } )
         }
         data = data
@@ -48,6 +48,7 @@ function desenhar(){
                         <td>${usuario.id}</td>
                         <td>${usuario.nome}</td>
                         <td>${usuario.fone}</td>
+                        <td>${usuario.pessoa}</td>
                         <td>
                             <button onclick='vizualizar("cadastro",false,${usuario.id})'>Editar</button>
                             <button class='vermelho' onclick='perguntarSeDeleta(${usuario.id})'>Deletar</button>
@@ -62,7 +63,7 @@ function insertUsuario(nome, fone){
     const id = listaRegistros.ultimoIdGerado + 1;
     listaRegistros.ultimoIdGerado = id;
     listaRegistros.usuarios.push({
-        id, nome, fone
+        id, nome, fone, pessoa
     })
     gravarBD()
     desenhar()
@@ -73,6 +74,7 @@ function editUsuario(id, nome, fone){
     var usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
     usuario.nome = nome;
     usuario.fone = fone;
+    usuario.pessoa = pessoa;
     gravarBD()
     desenhar()
     vizualizar('lista')
@@ -108,6 +110,7 @@ function vizualizar(pagina, novo=false, id=null){
                 document.getElementById('id').value = usuario.id
                 document.getElementById('nome').value = usuario.nome
                 document.getElementById('fone').value = usuario.fone
+                document.getElementById('pessoa').value = usuario.pessoa
             }
         }
         document.getElementById('nome').focus()
@@ -122,11 +125,12 @@ function submeter(e){
         id: document.getElementById('id').value,
         nome: document.getElementById('nome').value,
         fone: document.getElementById('fone').value,
+        pessoa: document.getElementById('pessoa').value,
     }
     if(data.id){
-        editUsuario(data.id, data.nome, data.fone)
+        editUsuario(data.id, data.nome, data.fone, data.pessoa)
     }else{
-        insertUsuario( data.nome, data.fone )
+        insertUsuario( data.nome, data.fone, data.pessoa )
     }
 }
 
